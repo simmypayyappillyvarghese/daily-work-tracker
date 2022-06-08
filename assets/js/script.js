@@ -21,7 +21,6 @@ when user clicks on the Save Icon
 */
 
 function storeTaskData(event) {
-
   
   //Flag to verify if the hour value already is saved in the storage
   var valueExist = false;
@@ -60,10 +59,12 @@ function storeTaskData(event) {
   if (!valueExist) {
     localSrorageArray.push(hourtaskObj);
     
-    //Displaying the para element with success message once the new element is pushed to localStorage
+  }
+
+
+    //Displaying the para element with success message when the task is added/updated
     $(successMessageEl).removeClass('hide');
     $(successMessageEl).addClass('show');
-  }
 
   localStorage.setItem("hour-task", JSON.stringify(localSrorageArray));
 }
@@ -174,4 +175,9 @@ color class is applied when the time changes
 */
 var timerVariable = setInterval(applyColorCode, 60000);
 
-/*To do to add text while saving the data */
+/*Hide the success message when the textares is in focus */
+$(textAreaEl).on('focus',function(){
+console.log("focus");
+  $(successMessageEl).removeClass('show');
+  $(successMessageEl).addClass('hide');
+});
