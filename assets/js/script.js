@@ -129,5 +129,52 @@ var timerVariable = setInterval(applyColorCode,60000);
 
 
 
+
+
+/*
+
+
+Updates the tracker with the stored date when the page refreshes
+
+*/
+function updateTracker(){
+
+  var localStorageTemp=JSON.parse(localStorage.getItem("hour-task"));
+  var localStorageArray=localStorageTemp!==null?localStorageTemp:[]; 
+  
+  
+  //Below code validates if the hour element & respective text
+  //is saved in local storage
+  
+  //Iterate through each hour element and check it among the localstorage keys
+  //If a match found respective textarea element is updated
+  
+  for(let index=0;index<hourEl.length;index++){
+  
+    var hour=$(hourEl[index]).html().trim();
+    
+  
+    for(let j=0;j<localStorageArray.length;j++){
+  
+      //Object.keys will fetch the keys in an array and fetch the element 
+      //to get the hour element from storage array
+  
+      if(hour === Object.keys(localStorageArray[j])[0]){
+  
+        
+        var val=localStorageArray[j][hour];
+  
+        $(textAreaEl[index]).val(val);
+      
+      }
+    }
+  
+  }
+  
+  }
+
+  updateTracker();
+
+
 //When Page is loaded ,current Date is displayed and color code is applied
 displayCurrentDate();
