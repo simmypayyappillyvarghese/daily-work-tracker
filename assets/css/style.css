@@ -75,3 +75,23 @@ textarea {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
 }
+
+/*Class to hide the success Message*/
+.hide{
+  display: none;
+}
+
+.success-message{
+
+padding-top: 1rem;
+  margin-top:1rem ;
+}
+
+.success-message strong{
+
+  color: #ff6961;
+}
+
+.show{
+  display: block;
+}

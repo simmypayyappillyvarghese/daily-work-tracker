@@ -3,6 +3,7 @@ var currentDay = $("#currentDay");
 var saveButtonEl = $(".saveBtn");
 var textAreaEl = $("textarea");
 var hourEl = $(".hour");
+var successMessageEl=$('.success-message');
 
 //Display the current date using moment API which will format
 //date as Ex: Monday,June 6th
@@ -20,6 +21,8 @@ when user clicks on the Save Icon
 */
 
 function storeTaskData(event) {
+
+  
   //Flag to verify if the hour value already is saved in the storage
   var valueExist = false;
   //Copy of the  existing local Storage Data
@@ -56,6 +59,10 @@ function storeTaskData(event) {
   //Object is added to the array only if its a new entry
   if (!valueExist) {
     localSrorageArray.push(hourtaskObj);
+    
+    //Displaying the para element with success message once the new element is pushed to localStorage
+    $(successMessageEl).removeClass('hide');
+    $(successMessageEl).addClass('show');
   }
 
   localStorage.setItem("hour-task", JSON.stringify(localSrorageArray));
@@ -71,56 +78,47 @@ Below Function is executed every minute to check if the task hour is past
 the current hour or not.If then apply the color code by add the respective class.
 */
 
-
 function applyColorCode() {
   //current hour in 24 hour format
   var currentHour = Number(moment().format("H"));
- 
 
-for(let i=0;i<textAreaEl.length;i++){     
-
+  for (let i = 0; i < textAreaEl.length; i++) {
     //This will fetch hour value and remove AM/PM from hour element
-    var hourValue=$(hourEl[i]).html().trim();
+    var hourValue = $(hourEl[i]).html().trim();
 
-    //Fetches the numerical value and assign to taskHourString 
+    //Fetches the numerical value and assign to taskHourString
     //and PM/AM will be assigned to meridianValue
-    var taskHourString=hourValue.substr(0,hourValue.length-2);
-    var meridianValue=hourValue.substr(-2);
-   
+    var taskHourString = hourValue.substr(0, hourValue.length - 2);
+    var meridianValue = hourValue.substr(-2);
+
     //Convert task hour to numerical value
-    var taskHour=Number(taskHourString);
-    
+    var taskHour = Number(taskHourString);
+
     //Convert the task hour to 23 hour format to compare the time with current hour
-    if(meridianValue==="PM" & taskHour!=12){
-        taskHour+=12;
+    if ((meridianValue === "PM") & (taskHour != 12)) {
+      taskHour += 12;
     }
 
-
-//For Past Hour
-if (taskHour<currentHour) {
-
- $(textAreaEl[i]).removeClass("present");
- $(textAreaEl[i]).removeClass("future");
- $(textAreaEl[i]).addClass("past");
-
+    //For Past Hour
+    if (taskHour < currentHour) {
+      $(textAreaEl[i]).removeClass("present");
+      $(textAreaEl[i]).removeClass("future");
+      $(textAreaEl[i]).addClass("past");
+    }
+    //For Future Hour
+    else if (taskHour > currentHour) {
+      $(textAreaEl[i]).removeClass("present");
+      $(textAreaEl[i]).removeClass("past");
+      $(textAreaEl[i]).addClass("future");
+    }
+    //For Present Hour
+    else {
+      $(textAreaEl[i]).removeClass("past");
+      $(textAreaEl[i]).removeClass("future");
+      $(textAreaEl[i]).addClass("present");
+    }
+  }
 }
-//For Future Hour
-else if (taskHour>currentHour) {
-    $(textAreaEl[i]).removeClass("present");
-    $(textAreaEl[i]).removeClass("past");
-    $(textAreaEl[i]).addClass("future");
-} 
-//For Present Hour
-else {
-    $(textAreaEl[i]).removeClass("past");
-    $(textAreaEl[i]).removeClass("future");
-    $(textAreaEl[i]).addClass("present");
-}
-
-}
-           
-}
-
 
 /*
 
@@ -129,69 +127,51 @@ TO UPDATE THE PAGE WITH STORED DATA
 Updates the tracker with the stored date when the page refreshes
 
 */
-function updateTracker(){
+function updateTracker() {
+  var localStorageTemp = JSON.parse(localStorage.getItem("hour-task"));
+  var localStorageArray = localStorageTemp !== null ? localStorageTemp : [];
 
-  var localStorageTemp=JSON.parse(localStorage.getItem("hour-task"));
-  var localStorageArray=localStorageTemp!==null?localStorageTemp:[]; 
-  
-  
   //Below code validates if the hour element & respective text
   //is saved in local storage
-  
+
   //Iterate through each hour element and check it among the localstorage keys
   //If a match found respective textarea element is updated
-  
-  for(let index=0;index<hourEl.length;index++){
-  
-    var hour=$(hourEl[index]).html().trim();
-    
-  
-    for(let j=0;j<localStorageArray.length;j++){
-  
-      //Object.keys will fetch the keys in an array and fetch the element 
+
+  for (let index = 0; index < hourEl.length; index++) {
+    var hour = $(hourEl[index]).html().trim();
+
+    for (let j = 0; j < localStorageArray.length; j++) {
+      //Object.keys will fetch the keys in an array and fetch the element
       //to get the hour element from storage array
-  
-      if(hour === Object.keys(localStorageArray[j])[0]){
-  
-        
-        var val=localStorageArray[j][hour];
-  
+
+      if (hour === Object.keys(localStorageArray[j])[0]) {
+        var val = localStorageArray[j][hour];
+
         $(textAreaEl[index]).val(val);
-      
       }
     }
-  
   }
-  
-  }
-
-
+}
 
 //Initial function to be executed when the page loads
 
-function init(){
+function init() {
+  //When Page is loaded ,current Date is displayed and color code is applied
+  displayCurrentDate();
 
-//When Page is loaded ,current Date is displayed and color code is applied
-displayCurrentDate();
+  //To update the page with stored data
+  updateTracker();
 
-//To update the page with stored data
-updateTracker();
-
-//Function to apply the color classes
-applyColorCode();
+  //Function to apply the color classes
+  applyColorCode();
 }
 
 init();
-
 
 /* 
 Apply color code called every one minute using the set Interval to ensure 
 color class is applied when the time changes
 */
-var timerVariable = setInterval(applyColorCode,60000);
-
-
-
-
+var timerVariable = setInterval(applyColorCode, 60000);
 
 /*To do to add text while saving the data */
