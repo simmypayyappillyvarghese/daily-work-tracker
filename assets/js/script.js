@@ -119,20 +119,12 @@ else {
 
 }
            
-  
 }
-
-//Function is called once on loading and every one minute using the set Interval to compare the times
-applyColorCode();
-
-var timerVariable = setInterval(applyColorCode,60000);
-
-
-
 
 
 /*
 
+TO UPDATE THE PAGE WITH STORED DATA
 
 Updates the tracker with the stored date when the page refreshes
 
@@ -173,8 +165,33 @@ function updateTracker(){
   
   }
 
-  updateTracker();
 
+
+//Initial function to be executed when the page loads
+
+function init(){
 
 //When Page is loaded ,current Date is displayed and color code is applied
 displayCurrentDate();
+
+//To update the page with stored data
+updateTracker();
+
+//Function to apply the color classes
+applyColorCode();
+}
+
+init();
+
+
+/* 
+Apply color code called every one minute using the set Interval to ensure 
+color class is applied when the time changes
+*/
+var timerVariable = setInterval(applyColorCode,60000);
+
+
+
+
+
+/*To do to add text while saving the data */
