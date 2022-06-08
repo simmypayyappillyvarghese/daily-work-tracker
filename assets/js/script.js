@@ -3,13 +3,13 @@ var currentDay = $("#currentDay");
 var saveButtonEl = $(".saveBtn");
 var textAreaEl = $("textarea");
 var hourEl = $(".hour");
-var successMessageEl=$('.success-message');
+var successMessageEl = $(".success-message");
 
 //Display the current date using moment API which will format
 //date as Ex: Monday,June 6th
 function displayCurrentDate() {
   var currentDate = moment().format("dddd[ , ]MMMM Do");
-  currentDay.innerHTML = currentDate;
+  $(currentDay).html(currentDate);
 }
 
 /*
@@ -21,7 +21,6 @@ when user clicks on the Save Icon
 */
 
 function storeTaskData(event) {
-  
   //Flag to verify if the hour value already is saved in the storage
   var valueExist = false;
   //Copy of the  existing local Storage Data
@@ -58,13 +57,11 @@ function storeTaskData(event) {
   //Object is added to the array only if its a new entry
   if (!valueExist) {
     localSrorageArray.push(hourtaskObj);
-    
   }
 
-
-    //Displaying the para element with success message when the task is added/updated
-    $(successMessageEl).removeClass('hide');
-    $(successMessageEl).addClass('show');
+  //Displaying the para element with success message when the task is added/updated
+  $(successMessageEl).removeClass("hide");
+  $(successMessageEl).addClass("show");
 
   localStorage.setItem("hour-task", JSON.stringify(localSrorageArray));
 }
@@ -175,10 +172,8 @@ color class is applied when the time changes
 */
 var timerVariable = setInterval(applyColorCode, 60000);
 
-
 /*Hide the success message when the textares is in focus */
-$(textAreaEl).on('focus',function(){
-console.log("focus");
-  $(successMessageEl).removeClass('show');
-  $(successMessageEl).addClass('hide');
+$(textAreaEl).on("focus", function () {
+  $(successMessageEl).removeClass("show");
+  $(successMessageEl).addClass("hide");
 });
