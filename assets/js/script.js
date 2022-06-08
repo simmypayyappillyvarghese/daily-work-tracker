@@ -175,6 +175,7 @@ color class is applied when the time changes
 */
 var timerVariable = setInterval(applyColorCode, 60000);
 
+
 /*Hide the success message when the textares is in focus */
 $(textAreaEl).on('focus',function(){
 console.log("focus");

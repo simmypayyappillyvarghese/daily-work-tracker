@@ -22,6 +22,8 @@ textarea {
   color: black;
   border-radius: 0;
   border-bottom: 10px solid black;
+  /*Removed margin for page to appear like mock-up*/
+  margin-bottom: 0px;
 }
 
 .description {
